@@ -1,0 +1,122 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<script src="/js/highcharts.js"></script>
+<script>
+{% autoescape 'js' %}
+$(function () {
+	var chart;
+	$(document).ready(function() {
+		chart = new Highcharts.Chart({
+			chart: {
+				renderTo: 'server_graph',
+				zoomType: 'x'
+			},
+			plotOptions: {
+				series: {
+					marker: {
+						radius: 0
+					}
+				}
+			},
+			tooltip: {
+				shared: true,
+				crosshairs: true
+			},
+			title: { text: '{{ server_name }}' },
+			subtitle: { text: '{{ ip }}:{{ port }}' },
+			xAxis: [{
+				type: 'datetime',
+				tickInterval: 3600 * 1000,
+				minTickInterval: 3600 * 100,
+				plotBands: [
+					{% for cur in plotbands %}
+					{
+						color: '#{{ cur.color }}',
+						from: {{ cur.start }},
+						to: {{ cur.end }},
+						label: {
+							text: '{{ cur.map }}',
+							verticalAlign: 'bottom',
+							rotation: 270,
+							y: -50
+						},
+					},
+					{% endfor %}
+				]
+			}],
+			yAxis: [{
+				title: {
+					text: 'Players, Tickrate',
+				},
+				min: 0
+			}, {
+				gridLineWidth: 0,
+				title: {
+					text: 'Entity Count',
+					style: { color: '#d41b64' }
+				},
+				labels: { style: { color: '#d41b64' } },
+				opposite: true,
+				min: 0
+			}],
+			legend: {
+				enabled: true
+			},
+			series: [{
+				name: 'Players',
+				color: '#f4693a',
+				yAxis: 0,
+				data: [
+					{% for cur in players %}
+						[ {{ cur.date }}, {{ cur.val|default(0) }} ],
+					{% endfor %}
+				],
+			}, {
+				name: 'Tickrate',
+				color: '#68f046',
+				yAxis: 0,
+				data: [
+					{% for cur in tickrate %}
+						[ {{ cur.date }}, {{ cur.val|default(0) }} ],
+					{% endfor %}
+				]
+			}, {
+				name: 'Entity Count',
+				color: '#d41b64',
+				yAxis: 1,
+				data: [
+					{% for cur in ent_count %}
+						[ {{ cur.date }}, {{ cur.val|default(0) }} ],
+					{% endfor %}
+				]
+			}
+			]
+		});
+	});
+
+});
+{% endautoescape %}
+</script><div id="server_graph"></div>
+
+<div class="row">
+	<div class="span6">
+		<table class="table table-striped">
+			<tr>
+				<th>Server Name</th>
+				<th>End</th>
+			</tr>
+
+			{% for cur in names %}
+				<tr>
+					<td>{{ cur.name }}</td>
+					<td>{{ cur.end }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+
+<br>
+<b>Note:</b> All times are UTC
+{% endblock %}

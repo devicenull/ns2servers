@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<table class="table table-striped">
+	<tr>
+		<th>Address</th>
+		<th>Server Name</th>
+		<th>Map</th>
+		<th>Players</th>
+		<th>Version</th>
+	</tr>
+{% for cur in servers %}
+	{% if cur.status == 1 %}
+		<tr>
+	{% else %}
+		<tr style="color: red">
+	{% endif %}
+		<td>{{ cur.ip }}:{{ cur.port }}</td>
+		<td><a href="/detail.php?id={{ cur.id }}">{{ cur.name|default('** down **') }}</a></td>
+		<td>{{ cur.map }}</td>
+		<td>{{ cur.numplayers|default(0) }} / {{ cur.maxplayers|default(0) }}</td>
+		<td>{{ cur.version }}</td>
+	</tr>
+{% endfor %}
+
+</table>
+{% endblock %}

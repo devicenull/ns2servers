@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<script src="/js/highcharts.js"></script>
+<script>
+{% autoescape 'js' %}
+$(function () {
+	var chart;
+	$(document).ready(function() {
+		chart = new Highcharts.Chart({
+			chart: {
+				renderTo: 'players_graph',
+				zoomType: 'x'
+			},
+			plotOptions: {
+				series: {
+					marker: {
+						radius: 0
+					}
+				}
+			},
+			tooltip: {
+				shared: true,
+				crosshairs: true
+			},
+			title: { text: 'Overall Player Count' },
+			xAxis: [{
+				type: 'datetime',
+				tickInterval: 6 *3600 * 1000,
+				minTickInterval: 3600 * 100
+			}],
+			yAxis: [{
+				labels: { style: { color: '#f4693a' } },
+				title: {
+					text: 'Players',
+					style: { color: '#f4693a' }
+				},
+				min: 0
+			}],
+			legend: {
+				enabled: false
+			},
+			series: [{
+				name: 'Players',
+				color: '#f4693a',
+				yAxis: 0,
+				data: [
+					{% for cur in players %}
+						[ {{ cur.date }}, {{ cur.val }} ],
+					{% endfor %}
+				],
+			}]
+		});
+	});
+
+});
+{% endautoescape %}
+</script><div id="players_graph"></div>
+
+
+<br>
+<b>Note:</b> All times are UTC
+{% endblock %}
