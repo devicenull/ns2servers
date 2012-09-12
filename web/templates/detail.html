@@ -6,6 +6,7 @@
 {% autoescape 'js' %}
 $(function () {
 	var chart;
+	var chart2;
 	$(document).ready(function() {
 		chart = new Highcharts.Chart({
 			chart: {
@@ -50,15 +51,6 @@ $(function () {
 					text: 'Players, Tickrate',
 				},
 				min: 0
-			}, {
-				gridLineWidth: 0,
-				title: {
-					text: 'Entity Count',
-					style: { color: '#d41b64' }
-				},
-				labels: { style: { color: '#d41b64' } },
-				opposite: true,
-				min: 0
 			}],
 			legend: {
 				enabled: true
@@ -81,10 +73,63 @@ $(function () {
 						[ {{ cur.date }}, {{ cur.val|default(0) }} ],
 					{% endfor %}
 				]
-			}, {
+			}
+			]
+		});
+
+		chart2 = new Highcharts.Chart({
+			chart: {
+				renderTo: 'entity_graph',
+				zoomType: 'x'
+			},
+			plotOptions: {
+				series: {
+					marker: {
+						radius: 0
+					}
+				}
+			},
+			tooltip: {
+				shared: true,
+				crosshairs: true
+			},
+			title: { text: '{{ server_name }}' },
+			subtitle: { text: '{{ ip }}:{{ port }}' },
+			xAxis: [{
+				type: 'datetime',
+				tickInterval: 3600 * 1000,
+				minTickInterval: 3600 * 100,
+				plotBands: [
+					{% for cur in plotbands %}
+					{
+						color: '#{{ cur.color }}',
+						from: {{ cur.start }},
+						to: {{ cur.end }},
+						label: {
+							text: '{{ cur.map }}',
+							verticalAlign: 'bottom',
+							rotation: 270,
+							y: -50
+						},
+					},
+					{% endfor %}
+				]
+			}],
+			yAxis: [{
+				gridLineWidth: 0,
+				title: {
+					text: 'Entity Count',
+					style: { color: '#d41b64' }
+				},
+				labels: { style: { color: '#d41b64' } },
+				min: 0
+			}],
+			legend: {
+				enabled: true
+			},
+			series: [{
 				name: 'Entity Count',
 				color: '#d41b64',
-				yAxis: 1,
 				data: [
 					{% for cur in ent_count %}
 						[ {{ cur.date }}, {{ cur.val|default(0) }} ],
@@ -97,7 +142,10 @@ $(function () {
 
 });
 {% endautoescape %}
-</script><div id="server_graph"></div>
+</script>
+
+<div id="server_graph"></div>
+<div id="entity_graph"></div>
 
 <div class="row">
 	<div class="span6">
