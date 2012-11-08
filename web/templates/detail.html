@@ -8,6 +8,7 @@ $(function () {
 	var chart;
 	var chart2;
 	$(document).ready(function() {
+		$('input[name=date]').datepicker();
 		chart = new Highcharts.Chart({
 			chart: {
 				renderTo: 'server_graph',
@@ -144,6 +145,7 @@ $(function () {
 {% endautoescape %}
 </script>
 
+
 <div id="server_graph"></div>
 <div id="entity_graph"></div>
 
@@ -162,6 +164,20 @@ $(function () {
 				</tr>
 			{% endfor %}
 		</table>
+	</div>
+	<div class="span6">
+		<div id="pickdate">
+			<form method="GET">
+				<fieldset>
+				
+				<label>Date</label>
+				<input type="text" name="date" value="{{ date }}">
+				<br>
+				<button type="submit" class="btn">Submit</button>
+				<input type="hidden" name="id" value="{{ id }}">
+				</fieldset>
+			</form>
+		</div>
 	</div>
 </div>
 

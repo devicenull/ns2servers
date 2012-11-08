@@ -1,6 +1,15 @@
 <?php
 	require_once(__DIR__.'/init.php');
 
+	if (!isset($_REQUEST['date']))
+	{
+		$date = time();
+	}
+	else
+	{
+		$date = strtotime($_REQUEST['date'].' 23:59:59');
+	}
+
 	$res = $db->Execute('
 		select srv.id, srv.ip, srv.port, snh.server_name
 		from servers srv
@@ -13,13 +22,14 @@
 	$params['ip'] = $res->fields['ip'];
 	$params['port'] = $res->fields['port'];
 	$params['server_name'] = $res->fields['server_name'];
+	$params['date'] = strftime('%D',$date);
 
 	$res = $db->Execute('
 		select *
 		from server_history
-		where id=? and date > date_sub(now(), interval 24 hour)
+		where id=? and date > date_sub(from_unixtime(?), interval 24 hour) and date < from_unixtime(?)
 		order by date asc
-	',array($_REQUEST['id']));
+	',array($_REQUEST['id'],$date,$date));
 
 	$lastmap = '';
 	$lastmapstart = 0;
