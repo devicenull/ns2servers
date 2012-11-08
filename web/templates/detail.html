@@ -8,7 +8,7 @@ $(function () {
 	var chart;
 	var chart2;
 	$(document).ready(function() {
-		$('input[name=date]').datepicker();
+		$('input[name=date]').datepicker({ minDate: -30 });
 		chart = new Highcharts.Chart({
 			chart: {
 				renderTo: 'server_graph',

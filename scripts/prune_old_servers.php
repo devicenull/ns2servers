@@ -32,3 +32,6 @@
 	}
 
 	echo "Remove {$removeservers}/{$totalservers}\n";
+
+	$db->Execute('delete from server_history where date < date_sub(now(), interval 30 day);');
+
