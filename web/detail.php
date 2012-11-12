@@ -8,6 +8,7 @@
 	else
 	{
 		$date = strtotime($_REQUEST['date'].' 23:59:59');
+		if ($date > time()) $date = time();
 	}
 
 	$res = $db->Execute('

@@ -1,5 +1,9 @@
 {% extends 'layout.html' %}
 
+{% block title %}
+{{ server_name|e }}
+{% endblock %}
+
 {% block content %}
 <script src="/js/highcharts.js"></script>
 <script>
@@ -144,7 +148,7 @@ $(function () {
                         chart: {
                                 renderTo: 'playertick_graph',
 				type: 'bar',
-				height: 1000,
+				height: 800,
                         },
                         title: { text: '{{ server_name }}' },
                         subtitle: { text: '{{ ip }}:{{ port }}' },
@@ -153,8 +157,10 @@ $(function () {
 					{% for cur in avgticks %}
 						'{{ cur.players }}',
 					{% endfor %}
-				]
+				],
+				title: { text: 'Players' }
  			},
+			legend: { enabled: false },
 			yAxis: { title: { text: 'Average Tickrate' } },
                         series: [{
 				name: 'Average Tickrate',
