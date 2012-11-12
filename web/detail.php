@@ -72,7 +72,6 @@
 	);
 
 	ksort($ticktotals);
-	
 	$params['avgticks'] = array();
 	foreach ($ticktotals as $players=>$total)
 	{

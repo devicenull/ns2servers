@@ -16,7 +16,7 @@
 		<tr style="color: red">
 	{% endif %}
 		<td>{{ cur.ip }}:{{ cur.port }}</td>
-		<td><a href="/detail.php?id={{ cur.id }}">{{ cur.name|default('** down **') }}</a></td>
+		<td><a href="/servers/{{ cur.id }}/{{ cur.ip }}:{{ cur.port }}">{{ cur.name|default('** down **') }}</a></td>
 		<td>{{ cur.map }}</td>
 		<td>{{ cur.numplayers|default(0) }} / {{ cur.maxplayers|default(0) }}</td>
 		<td>{{ cur.version }}</td>

@@ -35,7 +35,7 @@
 			'maxplayers' => $srvinfo['maxplayers'],
 			'version'    => $srvinfo['version'],
 			'ip'         => $cur['ip'],
-			'port'       => $cur['port'],
+			'port'       => $cur['port']-1,
 			'status'     => $srvinfo['status'],
 		);
 	}

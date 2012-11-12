@@ -188,14 +188,13 @@ $(function () {
 	</div>
 	<div class="span6">
 		<div id="pickdate">
-			<form method="GET">
+			<form method="GET" action="/servers/{{ id }}/{{ ip }}:{{ port }}/">
 				<fieldset>
 				
 				<label>Date</label>
 				<input type="text" name="date" value="{{ date }}">
 				<br>
 				<button type="submit" class="btn">Submit</button>
-				<input type="hidden" name="id" value="{{ id }}">
 				</fieldset>
 			</form>
 			<div id="playertick_graph"></div>
