@@ -144,11 +144,17 @@ $(function () {
                         chart: {
                                 renderTo: 'playertick_graph',
 				type: 'bar',
-				height: 800,
+				height: 1000,
                         },
                         title: { text: '{{ server_name }}' },
                         subtitle: { text: '{{ ip }}:{{ port }}' },
-			xAxis: { tickInterval: 1 },
+			xAxis: { tickInterval: 1,
+				categories: [
+					{% for cur in avgticks %}
+						'{{ cur.players }}',
+					{% endfor %}
+				]
+ 			},
 			yAxis: { title: { text: 'Average Tickrate' } },
                         series: [{
 				name: 'Average Tickrate',

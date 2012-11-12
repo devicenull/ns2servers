@@ -70,8 +70,8 @@
 		'map'   => $lastmap,
 		'color' => $colors[$i%count($colors)],
 	);
-
 	ksort($ticktotals);
+	unset($ticktotals[0]);
 	$params['avgticks'] = array();
 	foreach ($ticktotals as $players=>$total)
 	{
