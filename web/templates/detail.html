@@ -139,6 +139,27 @@ $(function () {
 			}
 			]
 		});
+
+                chart3 = new Highcharts.Chart({
+                        chart: {
+                                renderTo: 'playertick_graph',
+				type: 'bar',
+				height: 800,
+                        },
+                        title: { text: '{{ server_name }}' },
+                        subtitle: { text: '{{ ip }}:{{ port }}' },
+			xAxis: { tickInterval: 1 },
+			yAxis: { title: { text: 'Average Tickrate' } },
+                        series: [{
+				name: 'Average Tickrate',
+                                data: [
+                                        {% for cur in avgticks %}
+                                                [ '{{ cur.players }} Players', {{ cur.avgtick|default(0) }} ],
+                                        {% endfor %}
+                                ]
+			}]
+		});
+
 	});
 
 });
@@ -177,6 +198,7 @@ $(function () {
 				<input type="hidden" name="id" value="{{ id }}">
 				</fieldset>
 			</form>
+			<div id="playertick_graph"></div>
 		</div>
 	</div>
 </div>

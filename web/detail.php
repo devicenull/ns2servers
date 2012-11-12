@@ -37,11 +37,15 @@
 
 	$colors = array('4db6bc','368a8f','8bcfd3');
 	$i = 0;
+	$ticktotals = array();
+	$ticksamples = array();
 	foreach ($res as $cur)
 	{
 		$date = strtotime($cur['date'])*1000;
 		$params['players'][] = array('val'=>$cur['numplayers'],'date'=>$date);
 		$params['tickrate'][] = array('val'=>$cur['tickrate'],'date'=>$date);
+		$ticktotals[(int)$cur['numplayers']] += $cur['tickrate'];
+		$ticksamples[$cur['numplayers']]++;
 		$params['ent_count'][] = array('val'=>$cur['ent_count'],'date'=>$date);
 		if ($cur['map'] != $lastmap)
 		{
@@ -66,6 +70,14 @@
 		'map'   => $lastmap,
 		'color' => $colors[$i%count($colors)],
 	);
+
+	ksort($ticktotals);
+	
+	$params['avgticks'] = array();
+	foreach ($ticktotals as $players=>$total)
+	{
+		$params['avgticks'][] = array('players'=>$players,'avgtick'=>round($total/$ticksamples[$players]));
+	}
 
 	$res = $db->Execute('
 		select *
